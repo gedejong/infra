@@ -1,0 +1,6 @@
+*.tfstate
+*.tfstate.backup
+.terraform/
+.idea
+.*.lock.hcl
+infra.iml
