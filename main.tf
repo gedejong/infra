@@ -1,3 +1,14 @@
+terraform {
+  backend "remote" {
+    hostname = "app.terraform.io"
+    organization = "edj-personal"
+
+    workspaces {
+      name = "infra"
+    }
+  }
+}
+
 variable "access_key" {
   type = string
 }
