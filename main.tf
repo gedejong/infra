@@ -1,6 +1,6 @@
 terraform {
   backend "remote" {
-    hostname = "app.terraform.io"
+    hostname     = "app.terraform.io"
     organization = "edj-personal"
 
     workspaces {
@@ -29,8 +29,8 @@ terraform {
 provider "aws" {
   region                  = "eu-central-1"
   shared_credentials_file = "~/.aws/credentials"
-  access_key = var.access_key
-  secret_key = var.secret_key
+  access_key              = var.access_key
+  secret_key              = var.secret_key
 }
 
 module "aws_static_website" {
@@ -38,4 +38,8 @@ module "aws_static_website" {
 
   website-domain-main     = "dejongsoftwareengineering.nl"
   website-domain-redirect = "www.dejongsoftwareengineering.nl"
+
+  tags = {
+    "Project" : "recipes-site"
+  }
 }
