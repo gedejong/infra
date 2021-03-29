@@ -43,7 +43,7 @@ module "config" {
   config_logs_bucket                      = module.config_logs.aws_logs_bucket
   config_logs_prefix                      = "config"
   check_cloudtrail_enabled                = true
-  check_guard_duty                        = true
+  check_guard_duty                        = false
   check_s3_bucket_public_write_prohibited = true
   check_s3_bucket_ssl_requests_only       = true
 
