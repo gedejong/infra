@@ -24,7 +24,7 @@ provider "aws" {
 }
 
 locals {
-  config_logs_bucket_name = "aws_config_logs"
+  config_logs_bucket_name = "aws-config-logs"
 }
 
 module "config_logs" {
