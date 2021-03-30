@@ -155,6 +155,87 @@ resource "aws_volume_attachment" "influxdb_volume_attachment" {
   volume_id   = aws_ebs_volume.influxdb_volume.id
 }
 
+resource "aws_kms_key" "influxdb-backup-objects" {
+  description             = "KMS key is used to encrypt bucket objects in influxdb"
+  deletion_window_in_days = 7
+}
+
+locals {
+  influxdb_bucket_name = "edejong-influxdb-backup"
+}
+
+data "aws_iam_policy_document" "bucket_policy" {
+  statement {
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+
+    actions = [
+      "s3:ListBucket",
+    ]
+
+    resources = [
+      "arn:aws:s3:::${local.influxdb_bucket_name}",
+    ]
+  }
+
+  statement {
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+    actions = [
+      "*"
+    ]
+  }
+}
+
+
+data "aws_iam_policy_document" "deny_non_ssl_access" {
+  # Force SSL access only
+  statement {
+    sid = "ForceSSLOnlyAccess"
+
+    effect = "Deny"
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+
+    actions = ["s3:*"]
+
+    resources = [
+      "arn:aws:s3:::${local.influxdb_bucket_name}",
+      "arn:aws:s3:::${local.influxdb_bucket_name}/*"]
+
+    condition {
+      test     = "Bool"
+      variable = "aws:SecureTransport"
+      values   = ["false"]
+    }
+  }
+}
+
+resource "aws_s3_bucket" "edejong-influxdb-backup" {
+  bucket = local.influxdb_bucket_name
+  versioning {
+    enabled = true
+  }
+  force_destroy = true
+  policy = data.aws_iam_policy_document.deny_non_ssl_access.json
+  acl = "private"
+  server_side_encryption_configuration {
+    rule {
+      apply_server_side_encryption_by_default {
+        sse_algorithm = "aws:kms"
+        kms_master_key_id = aws_kms_key.influxdb-backup-objects.id
+      }
+    }
+  }
+}
+
 resource "aws_route53_zone" "dejongsoftwareengineering_zone" {
   name = "dejongsoftwareengineering.nl"
 }
