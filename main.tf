@@ -23,6 +23,14 @@ provider "aws" {
   secret_key              = var.secret_key
 }
 
+provider "aws" {
+  region                  = "us-east-1"
+  alias                   = "us-east-1"
+  shared_credentials_file = "~/.aws/credentials"
+  access_key              = var.access_key
+  secret_key              = var.secret_key
+}
+
 locals {
   config_logs_bucket_name = "edj-se-aws-config-logs"
 }
@@ -208,7 +216,7 @@ data "aws_iam_policy_document" "deny_non_ssl_access" {
 
     resources = [
       "arn:aws:s3:::${local.influxdb_bucket_name}",
-      "arn:aws:s3:::${local.influxdb_bucket_name}/*"]
+    "arn:aws:s3:::${local.influxdb_bucket_name}/*"]
 
     condition {
       test     = "Bool"
@@ -224,12 +232,12 @@ resource "aws_s3_bucket" "edejong-influxdb-backup" {
     enabled = true
   }
   force_destroy = true
-  policy = data.aws_iam_policy_document.deny_non_ssl_access.json
-  acl = "private"
+  policy        = data.aws_iam_policy_document.deny_non_ssl_access.json
+  acl           = "private"
   server_side_encryption_configuration {
     rule {
       apply_server_side_encryption_by_default {
-        sse_algorithm = "aws:kms"
+        sse_algorithm     = "aws:kms"
         kms_master_key_id = aws_kms_key.influxdb-backup-objects.id
       }
     }
@@ -258,6 +266,9 @@ resource "aws_route53_record" "grafana_to_instance" {
 
 module "aws_static_website" {
   source = "github.com/gedejong/terraform-aws-static-website"
+  providers = {
+    aws.us-east-1 = aws.us-east-1
+  }
 
   website-domain-main     = "dejongsoftwareengineering.nl"
   website-domain-redirect = "www.dejongsoftwareengineering.nl"
