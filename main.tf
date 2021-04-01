@@ -265,6 +265,7 @@ resource "aws_route53_record" "grafana_to_instance" {
 module "aws_static_website" {
   source = "github.com/gedejong/terraform-aws-static-website"
   providers = {
+    aws.other     = aws
     aws.us-east-1 = aws.us-east-1
   }
 
