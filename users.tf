@@ -3,6 +3,7 @@ resource "aws_iam_user" "recipes" {
   path = "/system/"
 }
 
+/*
 data "aws_iam_policy_document" "recipes_pd" {
   statement {
     actions = [
@@ -25,3 +26,4 @@ resource "aws_iam_user_policy" "lb_ro" {
   user   = aws_iam_user.recipes.name
   policy = data.aws_iam_policy_document.recipes_pd.json
 }
+*/
