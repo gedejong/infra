@@ -276,3 +276,13 @@ module "aws_static_website" {
     "Project" : "recipes-site"
   }
 }
+
+resource "aws_default_vpc" "default" {
+}
+
+resource "aws_default_security_group" "default" {
+  vpc_id = aws_default_vpc.default.id
+
+  ingress = []
+  egress = []
+}
