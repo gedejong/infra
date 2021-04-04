@@ -12,7 +12,7 @@ resource "aws_iam_user" "edejong" {
 
 data "aws_iam_policy_document" "github_actions_recipes_policy_document" {
   statement {
-    sid    = "allow-s3-access-for-update-website"
+    sid    = "allowS3AccessForUpdateWebsite"
     effect = "Allow"
     actions = [
       "s3:PutObject",
@@ -26,12 +26,6 @@ data "aws_iam_policy_document" "github_actions_recipes_policy_document" {
       "arn:aws:s3:::${module.aws_static_website.website_root_s3_bucket}"
     ]
   }
-}
-
-resource "aws_iam_user_policy" "github_actions_recipes_policy" {
-  policy = data.aws_iam_policy_document.github_actions_recipes_policy_document.json
-  user   = aws_iam_user.github_actions_recipes.id
-  name   = "github_actions_recipes_policy"
 }
 
 resource "aws_iam_group" "github_actions_recipes" {
