@@ -1,38 +1,3 @@
-terraform {
-  backend "remote" {
-    hostname     = "app.terraform.io"
-    organization = "edj-personal"
-
-    workspaces {
-      name = "infra"
-    }
-  }
-
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 3.34.0"
-    }
-  }
-}
-
-provider "aws" {
-  region     = "eu-central-1"
-  access_key = var.access_key
-  secret_key = var.secret_key
-}
-
-provider "aws" {
-  region     = "us-east-1"
-  alias      = "us-east-1"
-  access_key = var.access_key
-  secret_key = var.secret_key
-}
-
-locals {
-  config_logs_bucket_name = "edj-se-aws-config-logs"
-}
-
 module "config_logs" {
   source  = "trussworks/logs/aws"
   version = "~> 10"
@@ -164,10 +129,6 @@ resource "aws_volume_attachment" "influxdb_volume_attachment" {
 resource "aws_kms_key" "influxdb-backup-objects" {
   description             = "KMS key is used to encrypt bucket objects in influxdb"
   deletion_window_in_days = 7
-}
-
-locals {
-  influxdb_bucket_name = "edejong-influxdb-backup"
 }
 
 data "aws_iam_policy_document" "bucket_policy" {
