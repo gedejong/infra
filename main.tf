@@ -110,7 +110,7 @@ resource "aws_instance" "influxdb" {
   key_name                = "cloud-max-1"
   monitoring              = false
   security_groups         = [aws_security_group.default_security_group.name]
-  iam_instance_profile    = aws_iam_instance_profile.influxdb_instance_profile.arn
+  iam_instance_profile    = aws_iam_instance_profile.influxdb_instance_profile.name
 }
 
 resource "aws_iam_instance_profile" "influxdb_instance_profile" {
