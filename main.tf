@@ -110,6 +110,12 @@ resource "aws_instance" "influxdb" {
   key_name                = "cloud-max-1"
   monitoring              = false
   security_groups         = [aws_security_group.default_security_group.name]
+  iam_instance_profile    = aws_iam_instance_profile.influxdb_instance_profile.arn
+}
+
+resource "aws_iam_instance_profile" "influxdb_instance_profile" {
+  name = "influxdb_instance_profile"
+  role = aws_iam_role.telegraf_cloudwatch_aws_role.id
 }
 
 resource "aws_ebs_volume" "influxdb_volume" {
@@ -245,5 +251,5 @@ resource "aws_default_security_group" "default" {
   vpc_id = aws_default_vpc.default.id
 
   ingress = []
-  egress = []
+  egress  = []
 }

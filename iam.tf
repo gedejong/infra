@@ -77,3 +77,39 @@ resource "aws_iam_group_policy_attachment" "accounting_policy" {
   policy_arn = data.aws_iam_policy.billing_access.arn
 }
 
+data "aws_iam_policy_document" "telegraf_assume_role_policy" {
+  statement {
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
+    principals {
+      type        = "Service"
+      identifiers = ["ec2.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_role" "telegraf_cloudwatch_aws_role" {
+  name               = "telegraf_cloudwatch_aws_role"
+  description        = "The role which retrieves data from Cloudwatch and reports it to InfluxDB"
+  assume_role_policy = data.aws_iam_policy_document.telegraf_assume_role_policy.json
+}
+
+data "aws_iam_policy_document" "telegraf_cloudwatch_metrics_read" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "cloudwatch:GetMetricData",
+      "cloudwatch:GetMetricStatistics",
+      "cloudwatch:GetMetricStream",
+      "cloudwatch:ListMetrics",
+      "cloudwatch:ListMetricStreams",
+    ]
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_role_policy" "telegraf_cloudwatch_aws_role_metrics_read" {
+  policy = data.aws_iam_policy_document.telegraf_cloudwatch_metrics_read.json
+  role   = aws_iam_role.telegraf_cloudwatch_aws_role.id
+  name   = "telegraf_cloudwatch_aws_role_metrics_read"
+}
