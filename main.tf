@@ -209,6 +209,15 @@ resource "aws_s3_bucket" "edejong-influxdb-backup" {
   }
 }
 
+resource "aws_s3_bucket" "selenium_chromium_test" {
+  bucket = "edj-selenium-chromium-test"
+  versioning {
+    enabled = true
+  }
+  force_destroy = false
+  acl           = "private"
+}
+
 resource "aws_route53_zone" "dejongsoftwareengineering_zone" {
   name = "dejongsoftwareengineering.nl"
 }
