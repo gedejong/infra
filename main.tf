@@ -54,6 +54,15 @@ resource "aws_security_group" "default_security_group" {
   }
 
   ingress {
+    description      = "HTTP"
+    from_port        = 80 
+    protocol         = "tcp"
+    to_port          = 80
+    ipv6_cidr_blocks = ["::/0"]
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+
+  ingress {
     description      = "MQTTS"
     from_port        = 8883
     to_port          = 8883
