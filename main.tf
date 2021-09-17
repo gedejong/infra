@@ -55,7 +55,7 @@ resource "aws_security_group" "default_security_group" {
 
   ingress {
     description      = "HTTP"
-    from_port        = 80 
+    from_port        = 80
     protocol         = "tcp"
     to_port          = 80
     ipv6_cidr_blocks = ["::/0"]
@@ -220,6 +220,15 @@ resource "aws_s3_bucket" "edejong-influxdb-backup" {
 
 resource "aws_s3_bucket" "selenium_chromium_test" {
   bucket = "edj-selenium-chromium-test"
+  versioning {
+    enabled = true
+  }
+  force_destroy = false
+  acl           = "private"
+}
+
+resource "aws_s3_bucket" "edj_openrtb_test" {
+  bucket = "edj-openrtb-test"
   versioning {
     enabled = true
   }
