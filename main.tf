@@ -6,6 +6,7 @@ module "config_logs" {
   allow_config       = true
   config_logs_prefix = "config"
   force_destroy      = true
+  enable_versioning  = true
 }
 
 module "config" {
@@ -190,7 +191,8 @@ data "aws_iam_policy_document" "deny_non_ssl_access" {
 
     resources = [
       "arn:aws:s3:::${local.influxdb_bucket_name}",
-    "arn:aws:s3:::${local.influxdb_bucket_name}/*"]
+      "arn:aws:s3:::${local.influxdb_bucket_name}/*"
+    ]
 
     condition {
       test     = "Bool"
@@ -257,7 +259,7 @@ resource "aws_route53_record" "grafana_to_instance" {
 }
 
 module "aws_static_website" {
-  source = "github.com/gedejong/terraform-aws-static-website"
+  source    = "github.com/gedejong/terraform-aws-static-website"
   providers = {
     aws.other     = aws
     aws.us-east-1 = aws.us-east-1
