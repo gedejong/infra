@@ -1,6 +1,6 @@
 module "config_logs" {
   source  = "trussworks/logs/aws"
-  version = "~> 10"
+  version = "~> 12.1"
 
   s3_bucket_name     = local.config_logs_bucket_name
   allow_config       = true
@@ -10,7 +10,7 @@ module "config_logs" {
 
 module "config" {
   source                                  = "trussworks/config/aws"
-  version                                 = "4.3.0"
+  version                                 = "4.6.0"
   config_logs_bucket                      = module.config_logs.aws_logs_bucket
   config_logs_prefix                      = "config"
   check_cloudtrail_enabled                = true
@@ -103,7 +103,7 @@ resource "aws_security_group" "default_security_group" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["80.100.196.53/32"]
+    cidr_blocks = ["77.172.178.183/32"]
   }
 }
 
