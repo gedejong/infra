@@ -258,6 +258,49 @@ resource "aws_route53_record" "grafana_to_instance" {
   ttl     = 300
 }
 
+resource "aws_route53_record" "mx_fastmail" {
+  name = ""
+  type = "MX"
+  ttl = 1800
+  zone_id = aws_route53_zone.dejongsoftwareengineering_zone.id
+  records = [
+    "10 in1-smtp.messagingengine.com.",
+    "20 in2-smtp.messagingengine.com."
+  ]
+}
+
+resource "aws_route53_record" "dkim1_fastmail" {
+  name = "fm1._domainkey"
+  type = "CNAME"
+  ttl = 1800
+  zone_id = aws_route53_zone.dejongsoftwareengineering_zone.id
+  records = [ "fm1.dejongsoftwareengineering.nl.dkim.fmhosted.com" ]
+}
+
+resource "aws_route53_record" "dkim2_fastmail" {
+  name = "fm2._domainkey"
+  type = "CNAME"
+  ttl = 1800
+  zone_id = aws_route53_zone.dejongsoftwareengineering_zone.id
+  records = [ "fm2.dejongsoftwareengineering.nl.dkim.fmhosted.com" ]
+}
+
+resource "aws_route53_record" "dkim3_fastmail" {
+  name = "fm3._domainkey"
+  type = "CNAME"
+  ttl = 1800
+  zone_id = aws_route53_zone.dejongsoftwareengineering_zone.id
+  records = [ "fm3.dejongsoftwareengineering.nl.dkim.fmhosted.com" ]
+}
+
+resource "aws_route53_record" "spf_fastmail" {
+  name = ""
+  type = "TXT"
+  ttl = 1800
+  zone_id = aws_route53_zone.dejongsoftwareengineering_zone.id
+  records = [ "v=spf1 include:spf.messagingengine.com ?all" ]
+}
+
 module "aws_static_website" {
   source    = "github.com/gedejong/terraform-aws-static-website"
   providers = {

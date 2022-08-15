@@ -6,5 +6,3 @@ locals {
     "in-project": "infra"
   }
 }
-
-
