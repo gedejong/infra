@@ -1,5 +1,5 @@
 locals {
-  datacenter  = "nbg1-dc1"
+  datacenter  = "fsn1-dc14"
   server_type = "cax11"
 }
 
