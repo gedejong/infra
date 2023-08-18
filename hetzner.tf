@@ -32,7 +32,7 @@ resource "hcloud_rdns" "primary1" {
   dns_ptr       = "dejongsoftwareengineering.nl"
 }
 
-resource "hcloud_volume" "master" {
+resource "hcloud_volume" "master_volume" {
   name      = "volume1"
   size      = 50
   server_id = hcloud_server.node1.id
@@ -42,7 +42,7 @@ resource "hcloud_volume" "master" {
 
 resource "hcloud_volume_attachment" "master_node1" {
   server_id = hcloud_server.node1.id
-  volume_id = hcloud_volume.master.id
+  volume_id = hcloud_volume.master_volume.id
 }
 
 resource "hcloud_ssh_key" "edejong" {
