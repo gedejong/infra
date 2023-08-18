@@ -1,5 +1,5 @@
 locals {
-  datacenter = "nbg1-dc3"
+  datacenter  = "nbg1-dc3"
   server_type = "cax11"
 }
 
@@ -10,25 +10,26 @@ resource "hcloud_server" "node1" {
 
   public_net {
     ipv4_enabled = true
-    ipv4 = hcloud_primary_ip.primary1.id
+    ipv4         = hcloud_primary_ip.primary1.id
     ipv6_enabled = true
   }
 
-  ssh_keys = [hcloud_ssh_key.edejong.id]
+  ssh_keys   = [hcloud_ssh_key.edejong.id]
   datacenter = local.datacenter
 }
 
 resource "hcloud_primary_ip" "primary1" {
-  datacenter = local.datacenter
-  type       = "ipv4"
+  datacenter    = local.datacenter
+  type          = "ipv4"
   assignee_type = "server"
   auto_delete   = true
+  name          = "primary1"
 }
 
 resource "hcloud_rdns" "primary1" {
-  primary_ip_id  = hcloud_primary_ip.primary1.id
-  ip_address     = hcloud_primary_ip.primary1.ip_address
-  dns_ptr        = "dejongsoftwareengineering.nl"
+  primary_ip_id = hcloud_primary_ip.primary1.id
+  ip_address    = hcloud_primary_ip.primary1.ip_address
+  dns_ptr       = "dejongsoftwareengineering.nl"
 }
 
 resource "hcloud_volume" "master" {
