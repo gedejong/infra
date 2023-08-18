@@ -25,6 +25,7 @@ module "config" {
   }
 }
 
+/*
 data "aws_ami" "aws" {
   filter {
     name   = "name"
@@ -33,7 +34,7 @@ data "aws_ami" "aws" {
 
   owners = ["amazon"]
 }
-
+*/
 resource "aws_security_group" "default_security_group" {
   name        = "default-security-group"
   description = "launch-wizard-1 created 2019-01-28T21:52:58.113+01:00"
@@ -109,7 +110,7 @@ resource "aws_security_group" "default_security_group" {
 }
 
 resource "aws_instance" "influxdb" {
-  ami                     = data.aws_ami.aws.id
+  ami                     = "ami-0eaec5838478eb0ba" #data.aws_ami.aws.id
   instance_type           = "t3.small"
   availability_zone       = "eu-central-1b"
   ebs_optimized           = true

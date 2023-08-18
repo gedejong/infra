@@ -6,6 +6,14 @@ terraform {
     workspaces {
       name = "infra"
     }
+
+  }
+
+  required_providers {
+    hcloud = {
+      source = "hetznercloud/hcloud"
+      version = "1.42.1"
+    }
   }
 }
 
@@ -22,3 +30,6 @@ provider "aws" {
   secret_key = var.secret_key
 }
 
+provider "hcloud" {
+  token = var.hcloud_token
+}
