@@ -40,11 +40,6 @@ resource "hcloud_volume" "master_volume2" {
   format    = "ext4"
 }
 
-resource "hcloud_volume_attachment" "master_node1" {
-  server_id = hcloud_server.node1.id
-  volume_id = hcloud_volume.master_volume2.id
-}
-
 resource "hcloud_ssh_key" "edejong" {
   name       = "Edwin de Jong Public Key"
   public_key = file("${path.module}/ssh_keys/id_rsa.pub")
