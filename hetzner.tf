@@ -4,7 +4,7 @@ locals {
 }
 
 resource "hcloud_server" "node1" {
-  name        = "node1"
+  name        = "cloudmax2"
   image       = data.hcloud_image.image_2.id
   server_type = local.server_type
 
@@ -33,7 +33,7 @@ resource "hcloud_rdns" "primary1" {
 }
 
 resource "hcloud_volume" "master_volume" {
-  name      = "volume1"
+  name      = "volume_cloudmax2"
   size      = 50
   server_id = hcloud_server.node1.id
   automount = true
