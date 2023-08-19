@@ -32,8 +32,8 @@ resource "hcloud_rdns" "primary1" {
   dns_ptr       = "dejongsoftwareengineering.nl"
 }
 
-resource "hcloud_volume" "master_volume" {
-  name      = "volume_cloudmax2"
+resource "hcloud_volume" "master_volume2" {
+  name      = "volume_cloudmax3"
   size      = 50
   server_id = hcloud_server.node1.id
   automount = true
