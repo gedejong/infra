@@ -109,20 +109,26 @@ resource "aws_security_group" "default_security_group" {
   }
 }
 
-# resource "aws_instance" "influxdb" {
-#   ami                     = "ami-0eaec5838478eb0ba" #data.aws_ami.aws.id
-#   instance_type           = "t3.small"
-#   availability_zone       = "eu-central-1b"
-#   ebs_optimized           = true
-#   disable_api_termination = false
-#   cpu_core_count          = 1
- #  cpu_threads_per_core    = 2
-#   hibernation             = false
-#   key_name                = "cloud-max-1"
-#   monitoring              = false
-#   security_groups         = [aws_security_group.default_security_group.name]
-#   iam_instance_profile    = aws_iam_instance_profile.influxdb_instance_profile.name
-# }
+resource "aws_instance" "influxdb" {
+  ami                     = "ami-0eaec5838478eb0ba" #data.aws_ami.aws.id
+  instance_type           = "t3.small"
+  availability_zone       = "eu-central-1b"
+  ebs_optimized           = true
+  disable_api_termination = false
+  cpu_core_count          = 1
+  cpu_threads_per_core    = 2
+  hibernation             = false
+  key_name                = "cloud-max-1"
+  monitoring              = false
+  security_groups         = [aws_security_group.default_security_group.name]
+  iam_instance_profile    = aws_iam_instance_profile.influxdb_instance_profile.name
+}
+
+
+resource "aws_ec2_instance_state" "test" {
+  instance_id = aws_instance.influxdb.id
+  state       = "stopped"
+}
 
 resource "aws_iam_instance_profile" "influxdb_instance_profile" {
   name = "influxdb_instance_profile"
