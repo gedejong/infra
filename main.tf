@@ -109,20 +109,20 @@ resource "aws_security_group" "default_security_group" {
   }
 }
 
-resource "aws_instance" "influxdb" {
-  ami                     = "ami-0eaec5838478eb0ba" #data.aws_ami.aws.id
-  instance_type           = "t3.small"
-  availability_zone       = "eu-central-1b"
-  ebs_optimized           = true
-  disable_api_termination = false
-  cpu_core_count          = 1
-  cpu_threads_per_core    = 2
-  hibernation             = false
-  key_name                = "cloud-max-1"
-  monitoring              = false
-  security_groups         = [aws_security_group.default_security_group.name]
-  iam_instance_profile    = aws_iam_instance_profile.influxdb_instance_profile.name
-}
+# resource "aws_instance" "influxdb" {
+#   ami                     = "ami-0eaec5838478eb0ba" #data.aws_ami.aws.id
+#   instance_type           = "t3.small"
+#   availability_zone       = "eu-central-1b"
+#   ebs_optimized           = true
+#   disable_api_termination = false
+#   cpu_core_count          = 1
+ #  cpu_threads_per_core    = 2
+#   hibernation             = false
+#   key_name                = "cloud-max-1"
+#   monitoring              = false
+#   security_groups         = [aws_security_group.default_security_group.name]
+#   iam_instance_profile    = aws_iam_instance_profile.influxdb_instance_profile.name
+# }
 
 resource "aws_iam_instance_profile" "influxdb_instance_profile" {
   name = "influxdb_instance_profile"
@@ -137,11 +137,11 @@ resource "aws_ebs_volume" "influxdb_volume" {
   snapshot_id       = "snap-0ec16755d26518f7e"
 }
 
-resource "aws_volume_attachment" "influxdb_volume_attachment" {
-  device_name = "/dev/xvda"
-  instance_id = aws_instance.influxdb.id
-  volume_id   = aws_ebs_volume.influxdb_volume.id
-}
+# resource "aws_volume_attachment" "influxdb_volume_attachment" {
+#   device_name = "/dev/xvda"
+#   instance_id = aws_instance.influxdb.id
+#   volume_id   = aws_ebs_volume.influxdb_volume.id
+# }
 
 resource "aws_kms_key" "influxdb-backup-objects" {
   description             = "KMS key is used to encrypt bucket objects in influxdb"
@@ -243,21 +243,21 @@ resource "aws_route53_zone" "dejongsoftwareengineering_zone" {
   name = "dejongsoftwareengineering.nl"
 }
 
-resource "aws_route53_record" "influx_to_instance" {
-  name    = "influxdb.dejongsoftwareengineering.nl"
-  type    = "CNAME"
-  zone_id = aws_route53_zone.dejongsoftwareengineering_zone.id
-  records = [aws_instance.influxdb.public_dns]
-  ttl     = 300
-}
+# resource "aws_route53_record" "influx_to_instance" {
+#   name    = "influxdb.dejongsoftwareengineering.nl"
+#   type    = "CNAME"
+#   zone_id = aws_route53_zone.dejongsoftwareengineering_zone.id
+#   records = [aws_instance.influxdb.public_dns]
+#   ttl     = 300
+# }
 
-resource "aws_route53_record" "grafana_to_instance" {
-  name    = "grafana.dejongsoftwareengineering.nl"
-  type    = "CNAME"
-  zone_id = aws_route53_zone.dejongsoftwareengineering_zone.id
-  records = [aws_instance.influxdb.public_dns]
-  ttl     = 300
-}
+# resource "aws_route53_record" "grafana_to_instance" {
+#   name    = "grafana.dejongsoftwareengineering.nl"
+#   type    = "CNAME"
+#   zone_id = aws_route53_zone.dejongsoftwareengineering_zone.id
+#   records = [aws_instance.influxdb.public_dns]
+#   ttl     = 300
+# }
 
 resource "aws_route53_record" "mx_fastmail" {
   name = ""
