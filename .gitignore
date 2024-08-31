@@ -4,3 +4,4 @@
 .idea/
 .*.lock.hcl
 infra.iml
+.DS_Store
